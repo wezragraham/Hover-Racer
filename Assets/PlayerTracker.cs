@@ -20,14 +20,17 @@ public class PlayerTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //display countdown to start
         if (tank.GetComponent<HoverTankController>().go == false)
         {
             myText.text = $"{tank.GetComponent<HoverTankController>().countdown}";
         }
-        else if(tank.GetComponent<HoverTankController>().go == true)
+        //display nothing during race
+        else if(tank.GetComponent<HoverTankController>().go == true && tank.GetComponent<HoverTankController>().finished == false)
         {
             myText.text = "";
         }
+        //display finish message and lap time
         else if (tank.GetComponent<HoverTankController>().finished == true)
         {
             myText.text = $"Finished!!! {tank.GetComponent<HoverTankController>().time}";

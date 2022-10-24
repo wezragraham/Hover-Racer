@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class HoverTankController : MonoBehaviour
 {
+    //variables for vehicle control
     [SerializeField]
     float rotationSpeed = 100.0f, vInput, hInput, distance, antiGravForce;
-
-    Rigidbody rigidBody;
 
     [SerializeField]
     GameObject hoverPad1, hoverPad2, hoverPad3, hoverPad4;
 
+    float hover1Hit, hover2Hit, hover3Hit, hover4Hit;
+
+    Rigidbody rigidBody;
+
     [SerializeField]
     bool player1, player2;
 
+    //variables for tracking lap completion
     public bool started, finished, go;
-
-    float hover1Hit, hover2Hit, hover3Hit, hover4Hit;
-
     public float countdown, time;
+
+
+
+
 
 
     RaycastHit hit;
@@ -38,8 +43,10 @@ public class HoverTankController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //countdown timer counts down to zero before players can start
         countdown -= Time.deltaTime;
 
+        //assigning inputs
         if (player1 == true && player2 == false)
         {
             hInput = Input.GetAxis("Horizontal1");
@@ -51,6 +58,7 @@ public class HoverTankController : MonoBehaviour
             vInput = Input.GetAxis("Vertical2");
         }
 
+        //once countdown reaches zero, players can start. on race start, player lap timers begin.
         if (countdown <= 0)
         {
             go = true;
@@ -60,13 +68,10 @@ public class HoverTankController : MonoBehaviour
             transform.Rotate(Vector3.up, hInput * rotationSpeed * Time.deltaTime);
             rigidBody.AddRelativeForce(0, 0, vInput * 100);
         }
-        if (go == true && started == true)
+        if (go == true && started == true && finished == false)
         {
             time += Time.deltaTime;
         }
-
-
-        Debug.Log(started);
 
 
         if (Input.GetKey(KeyCode.Escape))
@@ -104,13 +109,14 @@ public class HoverTankController : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerExit(Collider other)
     {
+        //lap timers start when finish line is crossed, and stop when finish line is crossed again
         if (started == false && finished == false)
         {
             started = true;
         }
-        else if (started == true && finished == false)
+        if (started == true && finished == false && time >= 2)
         {
             finished = true;
         }
