@@ -66,7 +66,7 @@ public class HoverTankController : MonoBehaviour
         if (go == true)
         {
             transform.Rotate(Vector3.up, hInput * rotationSpeed * Time.deltaTime);
-            rigidBody.AddRelativeForce(0, 0, vInput * 100);
+            rigidBody.AddRelativeForce(0, 0, vInput * 1000);
         }
         if (go == true && started == true && finished == false)
         {
